@@ -14,15 +14,15 @@ import java.nio.ByteOrder;
 public class ACQUAServer {
 
 	protected static boolean run = true;
-	final static int numberProbes = 1000;
+	final static int numberProbes = 100;
 	final static int udpPort = 9050;
 	final static int tcpPort = 9051;
+	final static int udpPacketSize = 12 + 500;
+
+	final static int fullPacketSize = 28 * 8 + udpPacketSize * 8;
 
 	public static void main(String[] args) {
 		DatagramSocket udpSocket = null;
-
-		int udpPacketSize = 12 + 1000;
-		int fullPacketSize = 28 * 8 + udpPacketSize * 8;
 
 		ServerSocket tcpServer = null;
 		Socket tcpSocket = null;
@@ -74,7 +74,7 @@ public class ACQUAServer {
 					endTime = System.currentTimeMillis();
 					byteBuilder = ByteBuffer.wrap(udpReceivePacket.getData());
 					byteBuilder.order(ByteOrder.LITTLE_ENDIAN);
-					// int id = byteBuilder.getInt(0);
+					System.out.print(byteBuilder.getInt(0) + " ");
 					long timestamp = byteBuilder.getLong(4);
 
 					delaySum += (endTime - timestamp);
@@ -83,6 +83,7 @@ public class ACQUAServer {
 					downloading = false;
 				}
 			}
+			System.out.print("\n");
 			Log.d("end time   " + endTime);
 			Log.d("Received: " + receivedPackets);
 
@@ -108,6 +109,8 @@ public class ACQUAServer {
 
 			Log.d("Sending [delay:" + delay + "ms, bandwith:" + bandwith
 					+ "Kbits/s, lossRate:" + lossRate + "%] to client");
+			Log.d("Expected bandwith without loss, same time: "
+					+ (numberProbes * fullPacketSize / time) + "Kbit/s");
 			byteBuilder = ByteBuffer.allocate(12);
 
 			// delay
@@ -156,6 +159,7 @@ public class ACQUAServer {
 			}
 
 			Log.d("Sending " + numberProbes + " udp packets to client");
+			long asdf = System.currentTimeMillis();
 			for (int i = 0; i < numberProbes; i++) {
 				try {
 					byteBuilder = ByteBuffer.allocate(udpPacketSize);
@@ -183,7 +187,7 @@ public class ACQUAServer {
 					continue;
 				}
 			}
-			Log.d("Done");
+			Log.d("Done in " + (System.currentTimeMillis() - asdf) + "ms.");
 		}
 
 		try {
