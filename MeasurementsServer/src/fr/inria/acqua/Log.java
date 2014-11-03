@@ -7,7 +7,7 @@ import java.util.Locale;
 public class Log {
 	static Calendar c = Calendar.getInstance(Locale.getDefault());;
 	static SimpleDateFormat dateFormat = new SimpleDateFormat(
-			"dd/MM/yyyy HH:mm:ss");
+			"dd/MM/yyyy HH:mm:ss.SSS");
 
 	public static String now() {
 		c.setTimeInMillis(System.currentTimeMillis());
