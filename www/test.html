@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ACQUA DEMO</title>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+        <form id="pipe-config" method="post" action="">
+            <table>
+                <tr>
+                    <td>Pipe [id]</td> 
+                    <td><input type="number" name="pipe" min="10" max="12" ></td>
+                </tr>
+                <tr>
+                    <td>Bandwidth [KBytes/s] </td> 
+                    <td><input type="number" name="bw" min="0"></td>
+                </tr>
+                <tr>
+                    <td>Delay [ms]</td> 
+                    <td><input type="number" name="delay" min="0"></td>
+                </tr>
+                <tr>
+                    <td>Packet-Loss-Rate [value between 0 and 1]</td> 
+                    <td><input type="number" name="plr" step="any" min="0" max="1"></td>
+                </tr>
+            </table>
+            <input type="submit" value="Apply Changes">
+        </form>
+
+        <form id="pipe-show-all" method="post" action="">
+            <input type="submit" value="show pipes status">
+        </form>
+
+        <br>
+
+        <div id="result"></div>
+
+        <script>
+            // Attach a submit handler to the form
+            $( "#pipe-config" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+                var url = "cgi-bin/pipe-config";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+        </script>
+
+        <script>
+            // Attach a submit handler to the form
+            $( "#pipe-show-all" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+                var url = "cgi-bin/pipe-show-all";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+        </script>
+    </body>
+</html>

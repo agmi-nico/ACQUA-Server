@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "Content-type: text/html"
+echo ""
+read post_data
+IFS='&' read -a array <<< "$post_data"
+for element in "${array[@]}"
+do 
+    #echo "$element<br>"
+    eval "$element"
+done
+echo "$(date)<br>"
+$Dplr=$(bc << EOF
+scale=2; $(plr)/100
+EOF)
+echo "$(Dplr)"
+CONFIG_CMD="sudo ipfw pipe ${pipe} config bw ${bw}Kbit/s delay ${delay}ms plr $plr queue 100"
+echo "applying changes...<br>"
+echo "\"${CONFIG_CMD}\"<br>"
+eval $CONFIG_CMD
+sudo ipfw pipe $pipe show | while read line
+do
+    echo "${line}<br>"
+done
+echo "done<br>"

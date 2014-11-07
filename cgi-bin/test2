@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "Content-type: text/html"
+echo ""
+echo "<html><head><title>Demo</title></head></body>"
+echo "Today is $(date) <br>"
+echo "Current directory is $(pwd) <br>"
+echo "Shell Script name is $0 <br>"
+PIPE=$1
+echo "Pipe numer: $PIPE <br>"
+echo "Queery String: $QUERY_STRING <br>"
+read abc
+IFS='&' read -a array <<< "$abc"
+echo ":: $abc ::<br>"
+for element in "${array[@]}"
+do 
+    echo "$element <br>"
+    eval "$element"
+done
+
+echo ":: $pipe"
+echo ":: $pipe2"
+echo "Result: <br>"
+#sudo ipfw add pipe 24 in src-ip 192.168.56.14
+echo "</body></html>"

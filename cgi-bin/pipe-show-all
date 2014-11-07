@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "Content-type: text/html"
+echo ""
+echo "$(date)<br><br>"
+echo "ipfw show:<br>"
+sudo ipfw show | while read line
+do
+    echo "${line}<br>"
+done
+echo "<br>"
+echo "ipfw pipe show:<br>"
+sudo ipfw pipe show | while read line
+do
+    echo "${line}<br>"
+done

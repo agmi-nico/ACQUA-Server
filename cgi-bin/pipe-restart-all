@@ -1,0 +1,27 @@
+#!/bin/bash
+#remove previous pipes/config
+sudo ipfw flush << EOF
+y
+EOF
+#Traffic from subnet 10.0.X.X
+sudo ipfw add pipe 10 in src-ip 10.0.1.0/24
+#Traffic to subnet 10.0.X.X
+sudo ipfw add pipe 11 out dst-ip 10.0.1.0/24
+#start pipes with default config -no traffic shaping-
+sudo ipfw pipe 10 config
+sudo ipfw pipe 11 config
+
+echo "Content-type: text/html"
+echo ""
+echo "$(date)<br><br>"
+echo "ipfw show:<br>"
+sudo ipfw show | while read line
+do
+    echo "${line}<br>"
+done
+echo "<br>"
+echo "ipfw pipe show:<br>"
+sudo ipfw pipe show | while read line
+do
+    echo "${line}<br>"
+done

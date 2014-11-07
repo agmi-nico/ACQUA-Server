@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ACQUA DEMO</title>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+        <form id="pipe-config-upload" method="post" action="">
+            <table>
+                <tr>
+                    <td>Client Upload (Pipe 10)</td> 
+                    <td><input type="hidden" name="pipe" value="10"></td>
+                </tr>
+                <tr>
+                    <td>Bandwidth [Kbit/s] </td> 
+                    <td><input id="bw-up" type="number" name="bw" min="0" value="0"></td>
+                </tr>
+                <tr>
+                    <td>Delay [ms]</td> 
+                    <td><input id="delay-up" type="number" name="delay" min="0" value="0"></td>
+                </tr>
+                <tr>
+                    <td>Packet-Loss-Rate [% - value between 0 and 1]</td> 
+                    <td><input id="plr-up" type="number" name="plr" step="any" min="0" max="1" value="0"></td>
+                </tr>
+            </table>
+            <!--<input type="submit" value="Apply Changes">-->
+        </form>
+
+        <form id="pipe-config-download" method="post" action="">
+            <table>
+                <tr>
+                    <td>Client Download (Pipe 11)</td> 
+                    <td><input type="hidden" name="pipe" value="11"></td>
+                </tr>
+                <tr>
+                    <td>Bandwidth [Kbit/s] </td> 
+                    <td><input id="bw-dwn" type="number" name="bw" min="0" value="0"></td>
+                </tr>
+                <tr>
+                    <td>Delay [ms]</td> 
+                    <td><input id="delay-dwn" type="number" name="delay" min="0" value="0"></td>
+                </tr>
+                <tr>
+                    <td>Packet-Loss-Rate [% - value between 0 and 1]</td> 
+                    <td><input id="plr-dwn" type="number" name="plr" step="any" min="0" max="1" value="0"></td>
+                </tr>
+            </table>
+            <!--<input type="submit" value="Apply Changes">-->
+        </form>
+
+        <br/>
+        <br/>
+
+        <form id="pipe-restart-all" method="post" action="">
+            <input type="submit" value="restart all">
+        </form>
+
+        <form id="pipe-show-all" method="post" action="">
+            <input type="submit" value="show pipes status">
+        </form>
+
+        <br>
+
+        <div id="result"></div>
+
+        <script>
+            // Attach a submit handler to the form
+            //buttons handle
+            $( "#pipe-config-upload" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+                var url = "cgi-bin/pipe-config";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+            $( "#pipe-config-download" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+
+
+                var url = "cgi-bin/pipe-config";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+
+            $( "#pipe-config-upload" ).focusout(function() {
+                var url = "cgi-bin/pipe-config";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+
+            $( "#pipe-config-download" ).focusout(function() {
+                var url = "cgi-bin/pipe-config";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+        </script>
+
+        <script>
+            // Attach a submit handler to the form
+            $( "#pipe-show-all" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+                var url = "cgi-bin/pipe-show-all";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+            });
+        </script>
+
+        <script>
+            // Attach a submit handler to the form
+            $( "#pipe-restart-all" ).submit(function( event ) {
+                // Stop form from submitting normally
+                event.preventDefault();
+                // Get some values from elements on the page:
+                var url = "cgi-bin/pipe-restart-all";
+                // Send the data using post
+                var posting = $.post( url, $(this).serialize() );
+                // Put the results in a div
+                posting.done(function( data ) {
+                    $( "#result" ).empty().append( data );
+                });
+                $('input[id="bw-up"').val("0");
+                $('input[id="delay-up"').val("0");
+                $('input[id="plr-up"').val("0");
+                $('input[id="bw-dwn"').val("0");
+                $('input[id="delay-dwn"').val("0");
+                $('input[id="plr-dwn"').val("0");
+            });
+        </script>
+
+    </body>
+</html>

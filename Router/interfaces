@@ -1,0 +1,14 @@
+auto lo
+iface lo inet loopback
+
+auto wlan1
+allow-hotplug wlan1
+iface wlan1 inet static
+address 10.0.0.1
+netmask 255.255.255.0
+
+auto wlan1_1
+allow-hotplug wlan1_1
+iface wlan1_1 inet static
+address 10.0.1.1
+netmask 255.255.255.0
